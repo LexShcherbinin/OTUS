@@ -10,6 +10,18 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    jar {
+        manifest {
+            attributes('Main-Class': 'hellootus.HelloOtus')
+        }
+
+        from {
+            configurations.runtimeClasspath.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
 }
 
 subprojects {
