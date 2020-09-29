@@ -1,4 +1,4 @@
-package hellootus;
+package com.github.lexshcherbinin.hellootus;
 
 import static com.google.common.math.DoubleMath.factorial;
 
