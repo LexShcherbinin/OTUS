@@ -1,20 +1,17 @@
-plugins {
-    id 'java'
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group 'com.github.lexshcherbinin'
+    version '1.0'
+
+    repositories {
+        mavenCentral()
+    }
 }
 
-group 'com.github.lexshcherbinin'
-version '1.0'
-
-sourceCompatibility = 8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation "com.google.guava:guava:${guavaVersion}"
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+subprojects {
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
 }
