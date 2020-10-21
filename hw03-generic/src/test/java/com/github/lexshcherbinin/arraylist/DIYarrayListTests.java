@@ -14,7 +14,7 @@ public class DIYarrayListTests {
     @Test
     @DisplayName("addAll")
     void shouldAddAllElementsFromOtherCollection(){
-        List<Integer> testList = new ArrayList<>();
+        List<Integer> testList = new DIYarrayList<>();
         Integer[] expectedData = getRandomNumberArray(50);
 
         Collections.addAll(testList, expectedData);
@@ -24,7 +24,7 @@ public class DIYarrayListTests {
     @Test
     @DisplayName("copy")
     void shouldCorrectCopyAllElementsFromOtherCollection(){
-        List<Integer> testList = new ArrayList<>();
+        List<Integer> testList = new DIYarrayList<>();
 
         List<Integer> expectedData = Arrays.asList(getRandomNumberArray(50))
             .stream()
@@ -38,14 +38,17 @@ public class DIYarrayListTests {
     @Test
     @DisplayName("sort")
     void shouldCorrectSortElements(){
-        List<Integer> testList = Arrays.asList(getRandomNumberArray(50));
+        Integer[] array = getRandomNumberArray(50);
 
-        List<Integer> expectedData = testList
+        List<Integer> testList = new DIYarrayList<>();
+        Collections.addAll(testList, array);
+
+        List<Integer> expectedData = Arrays.asList(array)
             .stream()
             .sorted()
             .collect(Collectors.toList());
 
         Collections.sort(testList, Comparator.naturalOrder());
-        assertThat(testList.equals(expectedData)).isTrue();
+        assertThat(expectedData.equals(testList)).isTrue();
     }
 }
