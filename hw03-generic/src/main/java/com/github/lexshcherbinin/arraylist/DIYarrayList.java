@@ -55,21 +55,13 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-//        T1[] newElementData = (T1[]) getNewArray(size);
-//        System.arraycopy(elementData, 0, newElementData, 0, size);
-//        return newElementData;
         throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean add(T t) {
-        T[] newElementData = getNewArray(size + 1);
-        System.arraycopy(elementData, 0, newElementData, 0, size);
-
-        newElementData[size] = t;
-
-        elementData = getNewArray(++size);
-        System.arraycopy(newElementData, 0, elementData, 0, size);
+        elementData = Arrays.copyOf(elementData, size + 1);
+        elementData[size++] = t;
 
         return true;
     }
@@ -155,28 +147,19 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        T[] newElementData = getNewArray(size);
-        System.arraycopy(elementData, 0, newElementData, 0, size);
-
+        T returnValue = elementData[index];
         add(index, element);
-        return newElementData[index];
+        return returnValue;
     }
 
     @Override
     public void add(int index, T element) {
         checkIndex(index);
 
-        T[] newElementData = getNewArray(size + 1);
-        System.arraycopy(elementData, 0, newElementData, 0, size);
-
-        for (int i = size; i > index; i--) {
-            newElementData[i] = elementData[i-1];
-        }
-
-        newElementData[index] = element;
-
-        elementData = getNewArray(++size);
-        System.arraycopy(newElementData, 0, elementData, 0, size);
+        elementData = Arrays.copyOf(elementData, size + 1);
+        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+        elementData[index] = element;
+        size++;
     }
 
     @Override
@@ -184,13 +167,8 @@ public class DIYarrayList<T> implements List<T> {
         checkIndex(index);
 
         T returnValue = elementData[index];
-
-        T[] newElementData = getNewArray(size - 1);
-        System.arraycopy(elementData, 0, newElementData, 0, index);
-        System.arraycopy(elementData, index + 1, newElementData, index, size - index - 1);
-
-        elementData = getNewArray(size--);
-        System.arraycopy(newElementData, 0, elementData, 0, size);
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+        elementData[--size] = null;
 
         return returnValue;
     }
