@@ -9,7 +9,7 @@ public class DIYarrayList<T> implements List<T> {
     private T[] elementData;
 
     public DIYarrayList() {
-        this.elementData = getNewArray(0);
+        this.elementData = (T[]) new Object[0];
         this.size = 0;
     }
 
@@ -101,18 +101,21 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        for (T t : c) {
-            add(t);
-        }
+        T[] cArray = (T[]) c.toArray();
+        elementData = Arrays.copyOf(elementData, size + cArray.length);
+        System.arraycopy(cArray, 0, elementData, size, cArray.length - size);
+        size = size + cArray.length;
 
         return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        for (T t : c) {
-            add(index, t);
-        }
+        checkIndex(index);
+        T[] cArray = (T[]) c.toArray();
+        elementData = Arrays.copyOf(elementData, size + cArray.length);
+        System.arraycopy(elementData, index, elementData, index + cArray.length, size - index);
+        System.arraycopy(cArray, 0, elementData, index, cArray.length);
 
         return true;
     }
@@ -223,18 +226,15 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        if (fromIndex > toIndex) {
+        if (fromIndex > toIndex)
             throw new IndexOutOfBoundsException("toIndex +  <  + fromIndex");
-        }
 
-        if ((fromIndex > size - 1) || (toIndex > size - 1)) {
+        if ((fromIndex > size - 1) || (toIndex > size - 1))
             throw new IndexOutOfBoundsException("fromIndex or toIndex > size");
-        }
 
-        T[] newElementData = getNewArray(toIndex - fromIndex + 1);
-        System.arraycopy(elementData, fromIndex, newElementData, 0, toIndex - fromIndex + 1);
+        System.arraycopy(elementData, fromIndex, elementData, 0, toIndex - fromIndex + 1);
 
-        return Arrays.stream(newElementData).collect(toList());
+        return Arrays.stream(elementData).collect(toList());
     }
 
     @Override
@@ -259,9 +259,5 @@ public class DIYarrayList<T> implements List<T> {
             throw new IndexOutOfBoundsException("Индекс " + index);
 
         }
-    }
-
-    private T[] getNewArray(int size) {
-        return (T[]) new Object[size];
     }
 }

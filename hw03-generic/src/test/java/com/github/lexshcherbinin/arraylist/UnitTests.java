@@ -100,7 +100,7 @@ public class UnitTests {
         list.addAll(LIST);
 
         list.addAll(3, List.of("7", "8", "9"));
-        List<String> expectedResult = List.of("0", "1", "2", "9", "8", "7", "3", "4");
+        List<String> expectedResult = List.of("0", "1", "2", "7", "8", "9", "3", "4");
 
         assertThat(expectedResult.equals(list)).isTrue();
     }
