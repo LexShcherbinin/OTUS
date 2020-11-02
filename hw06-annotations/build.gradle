@@ -1,0 +1,10 @@
+group 'com.github.lexshcherbinin.annotations'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.assertj:assertj-core:${jassertjVersion}"
+}
